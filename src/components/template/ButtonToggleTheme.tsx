@@ -6,11 +6,12 @@ interface ButtonToggleThemeProps {
 }
 
 export default function ButtonToggleTheme(props: ButtonToggleThemeProps) {
+
     return props.theme === 'dark' ? (
         <div onClick={props.toggleTheme} className={`
         hidden sm:flex items-center cursor-pointer
         bg-gradient-to-r from-yellow-300 to-yellow-600
-        w-14 lg:w-24 h-8 p-1 rounded-full
+        w-14 lg:w-24 h-8 p-1 rounded-full ease-in-out
         `}>
             <div className={`
                 flex justify-center items-center

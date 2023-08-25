@@ -1,7 +1,6 @@
 import Logo from "./Logo";
 import MenuItens from "./MenuItens";
 import { AdjustmentsIcon, BellIcon, HomeIcon, LogoutIcon,  } from "../icons";
-import ButtonToggleTheme from "./ButtonToggleTheme";
 import useAppData from "../../data/hook/useAppData";
 
 export default function SideBar() {

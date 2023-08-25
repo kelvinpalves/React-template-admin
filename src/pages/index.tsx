@@ -1,6 +1,4 @@
-import { MoonIcon, SunIcon } from "../components/icons";
 import Layout from "../components/template/Layout";
-import useAppData from "../data/hook/useAppData";
 
 export default function Home() {
  
