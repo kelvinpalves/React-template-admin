@@ -1,27 +1,35 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
-import { GoogleIcon } from '../components/icons';
+import { GoogleIcon, WarningIcon } from '../components/icons';
+import useAuthData from "../data/hook/useAuthData";
 
 export default function Authentication() {
+    const { user, loginGoogle } = useAuthData()
+    const [error, setError] = useState(null)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [mode, setMode] = useState<'login' | 'register'>('login')
 
-    function layUnder() {
-        if(mode === 'login') {
-            console.log('Login')
-        } else {
-            console.log('Cadastrar')
-        }
+    function displayError(msg, time = 5) {
+        setError(msg)
+        setTimeout(() => setError(null), time * 1000)
     }
 
+    function layUnder() {
+        if(mode === 'login') {
+            displayError('Ocorreu um erro no login!', 3)
+        } else {
+            displayError('Ocorreu um erro no cadastro!')
+        }
+    }
+    
     return ( 
         <div className={`flex h-screen items-center justify-center`}>
             <div className={`w-1/2 hidden md:block lg:w-2/3`}>
                 <img
-                    src="https://cdn.pixabay.com/photo/2023/04/29/19/41/background-7959171_1280.jpg"
+                    src="https://i0.wp.com/techwek.com/wp-content/uploads/2021/01/linda-paisagem-para-notebook.jpg?resize=1024%2C576&ssl=1"
                     alt="Imagem tela de Autenticação"
                     className={`h-screen w-full object-cover`} />
             </div>
@@ -29,6 +37,20 @@ export default function Authentication() {
                 <h1 className={`text-2xl font-bold mb-5 text-center`}>
                     {mode === 'login' ? 'Entre com sua conta' : 'Cadastre-se na Plataforma'}
                 </h1>
+
+                {error ? (
+                    <div className={`
+                        flex
+                        bg-red-400
+                        text-white
+                        py-3 px-5 my-2
+                        border border-red-700 rounded-lg
+                    `}>
+                        {WarningIcon}
+                        <span className={`ml-3`}>{error}</span>
+                    </div>
+                ) : false}
+
                 <AuthInput 
                     label={"Email"} 
                     value={email} 
@@ -61,7 +83,7 @@ export default function Authentication() {
 
                 <hr className={`my-6 border-gray-300 w-full`} />
 
-                <button onClick={layUnder} className={`
+                <button onClick={loginGoogle} className={`
                     flex w-full bg-red-500 hover:bg-red-400
                     justify-center items-center text-white rounded-lg px-4 py-3
                 `}>

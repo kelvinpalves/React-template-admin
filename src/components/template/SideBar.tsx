@@ -1,10 +1,10 @@
 import Logo from "./Logo";
 import MenuItens from "./MenuItens";
 import { AdjustmentsIcon, BellIcon, HomeIcon, LogoutIcon,  } from "../icons";
-import useAppData from "../../data/hook/useAppData";
+import useAuthData from "../../data/hook/useAuthData";
 
 export default function SideBar() {
-    const {theme, toggleTheme} = useAppData()
+   const { logout } = useAuthData()
 
     return (
         <aside className={`
@@ -26,7 +26,7 @@ export default function SideBar() {
             </ul>
             <ul>
                <MenuItens text={"Sair"} icon={LogoutIcon} 
-                    onClick={() => console.log('logout')}
+                    onClick={logout}
                     className={`
                         text-red-600 dark:text-red-400
                         hover:bg-red-400 hover:text-white
