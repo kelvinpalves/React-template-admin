@@ -1,8 +1,7 @@
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import firebase from "../../firebase/config";
 import User from "../../model/User";
-import { useState } from "react";
 import  route  from "next/router";
 
 interface AuthContextProps {
@@ -13,7 +12,7 @@ interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps>({})
 
-async function userNormalized(userFirebase: firebase.User): Promise<User> {
+async function userNormalized(userFirebase:firebase.User): Promise<User> {
     const token = await userFirebase.getIdToken()
 
     return {
@@ -27,18 +26,18 @@ async function userNormalized(userFirebase: firebase.User): Promise<User> {
 }
 
 function manageCookies(logged: boolean) {
-    if(logged) {
-        Cookies.set('admin-template-rodrigo.auth', logged, {
+    if (logged) {
+        Cookies.set('admin-template-rodrigo.auth', 'logged', {
             expires: 7
         })
     } else {
-       Cookies.remove('admin-template-rodrigo.auth')
+        Cookies.remove('admin-template-rodrigo.auth')
     }
 }
 
 export function AuthProvider(props) {
     const [load, setLoad] = useState(true)
-    const [user, setUser] = useState<User>(null)
+    const [user, setUser] = useState<User>()
 
     async function configureSession(userFirebase: firebase.User) {
         const user = await userNormalized(userFirebase)
@@ -54,7 +53,6 @@ export function AuthProvider(props) {
             return false
         }
     }
-
     // Login Google
     async function loginGoogle() {
         try {
@@ -62,7 +60,7 @@ export function AuthProvider(props) {
             const resp = await firebase.auth().signInWithPopup(
                 new firebase.auth.GoogleAuthProvider()
             )
-            await configureSession(resp.user)
+            configureSession(resp.user)
             route.push('/')  
         } finally {
             setLoad(false)
